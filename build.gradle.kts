@@ -18,6 +18,8 @@ dependencies {
     implementation("org.apache.tika:tika-core:2.9.2")
     implementation("org.apache.tika:tika-parsers-standard-package")
 
+    implementation("commons-validator:commons-validator:1.9.0")
+
     testImplementation(kotlin("test"))
 }
 

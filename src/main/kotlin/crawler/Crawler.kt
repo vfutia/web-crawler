@@ -29,12 +29,11 @@ class Crawler(
         return contentMatched
     }
 
-    private suspend fun processPage(url: String): List<String> {
+    private suspend fun processPage(url: String): Set<String> {
         return try {
             retry {
                 println("Crawling page: $url")
-                val waitTime = generateWaitTime()
-                delay(waitTime)
+                delay(generateWaitTime())
 
                 val content = getPageContent(url)
 
@@ -46,11 +45,11 @@ class Crawler(
 
                 println("Crawling complete for $url")
 
-                content.links
-            } ?: listOf()
+                content.links.toSet()
+            } ?: setOf()
         } catch (e: Exception) {
             println("Failed to process $url: ${e.message}")
-            listOf()
+            setOf()
         }
     }
 
@@ -66,9 +65,9 @@ class Crawler(
         }
 
         //Process images for contained text
-        configuration.imageContentMatcher.matchesContent(configuration.searchTerms, content).forEach { entry ->
-            matches.add(ContentMatch(entry.value, url.fullUrlToSiteName(), url, ContentMatch.MatchContext.IMAGE))
-        }
+//        configuration.imageContentMatcher.matchesContent(configuration.searchTerms, content).forEach { entry ->
+//            matches.add(ContentMatch(entry.value, url.fullUrlToSiteName(), url, ContentMatch.MatchContext.IMAGE))
+//        }
 
         contentMatched[url] = matches
 
